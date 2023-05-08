@@ -11,3 +11,9 @@ console.log(marks[0].age);
 
 // using concatination
 console.log(`Name : ${marks[0].name}, Age : ${marks[0].age}`);
+
+// name with how many years old and he from where
+
+marks.forEach(mark => {
+    console.log(`${mark.name} is  ${mark.age} years old and he comes from ${mark.place}`)
+});
