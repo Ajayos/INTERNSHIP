@@ -8,6 +8,7 @@ const server = http.createServer(app);
 
 const port = 3001
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/hi', (req, res) => res.send('hey'));
 server.listen(port, () => log(`Server running  on port ${port}! http://localhost:3001`))
 
