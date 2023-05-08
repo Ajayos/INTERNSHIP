@@ -1,4 +1,4 @@
-// Path: html\script.js
+// Path: html\object.js
 
 const nodelog= require('@ajayos/nodelog');
 
