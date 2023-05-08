@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@ajayos/nodelog": "^1.0.2",
+    "@ajayos/nodemon": "^0.0.5"
+  }
+}
