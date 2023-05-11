@@ -70,12 +70,16 @@ const Homepage = () => {
           transform: "translateX(-50%)",
         }}
       >
-        <Typography color="white" variant="h2" gutterBotto sx={{  fontFamily:"Fantasy"}} >
+        <Typography
+          color="white"
+          variant="h2"
+          gutterBotto
+          sx={{ fontFamily: "Fantasy" }}
+        >
           # INCLUDES
         </Typography>
-      </Box>  
+      </Box>
       <Box
-      
         sx={{
           width: "50%",
           marginLeft: "50%",
@@ -86,7 +90,7 @@ const Homepage = () => {
           margin: "10px 0px 15px 0px",
           position: "relative",
           left: "50%",
-          bgcolor: 'background.paper',
+          bgcolor: "background.paper",
           border: "1px solid #e8e8e8",
           transform: "translateX(-50%)",
         }}
@@ -103,8 +107,8 @@ const Homepage = () => {
           <Tab label="Login" {...a11yProps(0)} />
           <Tab label="Sign Up" {...a11yProps(1)} />
         </Tabs>
-        </Box>
-        <Box
+      </Box>
+      <Box
         sx={{
           marginTop: "10px",
           backgroundColor: "white",
@@ -118,7 +122,6 @@ const Homepage = () => {
           transform: "translateX(-50%)",
         }}
       >
-
         <TabPanel value={value} index={0}>
           <Login />
         </TabPanel>

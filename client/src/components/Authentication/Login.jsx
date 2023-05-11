@@ -32,33 +32,19 @@ const Login = () => {
     setOpen(true);
   };
 
-  function toast(message, level)  {
-    setOpen(true);
-
-    return (<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          This is a success message!
-        </Alert>
-      </Snackbar>)
-      }
-
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
     setOpen(false);
   };
 
-
   const handleSubmit = async (event) => {
     setLoading(true);
     if (!email || !password) {
-      
-      
-      
       setLoading(false);
-      return 
+      return;
     }
 
     // console.log(email, password);
@@ -75,14 +61,11 @@ const Login = () => {
         config
       );
 
-      
       setLoading(false);
       history.push("/chats");
     } catch (error) {
-      
       setLoading(false);
     }
-    
   };
 
   return (
@@ -95,14 +78,10 @@ const Login = () => {
         }}
       >
         <Avatar sx={{ bgcolor: "secondary.main" }}></Avatar>
-        <Typography component="h1" variant="h5" >
+        <Typography component="h1" variant="h5">
           Login to your account
         </Typography>
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit}
-        >
+        <Box component="form" noValidate onSubmit={handleSubmit}>
           <TextField
             margin="normal"
             required
@@ -126,7 +105,9 @@ const Login = () => {
 
           <br />
           <FormControlLabel
-            control={<Checkbox onClick={handleClickShowPassword} color="primary" />}
+            control={
+              <Checkbox onClick={handleClickShowPassword} color="primary" />
+            }
             label={show ? "Hide password" : "Show password"}
           />
           <br />
@@ -142,9 +123,7 @@ const Login = () => {
           >
             Sign In
           </Button>
-          <Button variant="outlined" onClick={toast()}>
-        Open success snackbar
-      </Button>
+
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
@@ -152,7 +131,6 @@ const Login = () => {
               </Link>
             </Grid>
           </Grid>
-          
         </Box>
       </Box>
     </Grid>

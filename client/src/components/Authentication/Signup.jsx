@@ -29,6 +29,8 @@ const Signup = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const history = useHistory();
 
@@ -56,8 +58,7 @@ const Signup = () => {
   };
 
 
-  const [file, setFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
+ 
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
