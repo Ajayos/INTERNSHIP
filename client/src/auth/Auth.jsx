@@ -1,27 +1,62 @@
-
-
-import { Avatar, Container, IconButton, Typography, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, InputLabel, FilledInput, InputAdornment  } from "@mui/material";
+import {
+  Avatar,
+  Container,
+  Typography,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Alert,
+} from "@mui/material";
 import React from "react";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import axios from "axios"
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
 const Auth = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [open, setOpen] = React.useState({ su: false, email: false, noin: false, fail: false });
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const handleCloses = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
   };
-
-  const handleSubmit = (event) => {
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {return;}
+    
+  };
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const maili = data.get("email");
+    const password = data.get("password");
+    if(maili && password) {
+      if(maili.includes('@')) {
+        await axios.post('http://localhost:3001/login',{
+          email: data.get("email"),
+          password: data.get("password"),
+        }).then((data) => {
+          console.log(data);
+        }).catch((error) => {
+          console.error(error);
+        })
+      } else {
+        return <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}> Enter valid email</Alert>
+      }
+    } else {
+      return 
+    }
+    
   };
-  
 
   return (
     <Container component="main" maxWidth="lg">
@@ -32,7 +67,7 @@ const Auth = () => {
       >
         <Grid container>
           <CssBaseline />
-          
+
           <Grid
             item
             xs={12}
@@ -54,7 +89,7 @@ const Auth = () => {
             >
               <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
               <Typography component="h1" variant="h5">
-                login to your account
+                Login to your account
               </Typography>
               <Box
                 component="form"
@@ -78,35 +113,22 @@ const Auth = () => {
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   autoComplete="current-password"
+                ></TextField>
 
-                >
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword} 
-                  > 
-                    {showPassword ? "HIDE" : "SHOW" } 
-                  </IconButton>
-                </TextField>
-                <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
-          <FilledInput
-            id="filled-adornment-password"
-            type={showPassword ? 'text' : 'password'}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
+                <br />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onClick={handleClickShowPassword}
+                      color="primary"
+                    />
+                  }
+                  label={showPassword ? "Hide password" : "Show password"}
+                />
+                <br />
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
@@ -127,10 +149,16 @@ const Auth = () => {
                   </Grid>
                   <Grid item>
                     <Link href="#" variant="body2">
-                      {"Don't have an account? Sign Up"}
+                      {"Don't have an account? "} <Link href="/register" underline="none"> {'Sign Up'}</Link>
                     </Link>
                   </Grid>
                 </Grid>
+                <Snackbar id="su"  name="su" open={true} autoHideDuration={6000} onClose={handleClose}> <Alert id="su"  name="su" onClose={handleClose} severity="success" sx={{ width: '100%' }}> This is a success message! </Alert> </Snackbar>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                  <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                  This is a success message!
+                  </Alert>
+                </Snackbar>
               </Box>
             </Box>
           </Grid>
@@ -138,7 +166,6 @@ const Auth = () => {
       </Box>
     </Container>
   );
-}
+};
 
-
-export default Auth
+export default Auth;
