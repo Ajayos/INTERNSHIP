@@ -1,16 +1,13 @@
-import React from 'react';
-import Home from './components/Home';
-import Auth from './auth/Auth';
+import Homepage from "./Pages/Homepage";
 import { Route } from "react-router-dom";
-import Register from './auth/Register';
+import Chatpage from "./Pages/Chatpage";
+
 function App() {
-   return (
-    <>
-      <Route path="/home" component={Home} />
-      <Route path="/login" component={Auth} />
-      <Route path="/register" component={Register} />
-      <Route path="/"  component={Home} exact />
-    </>
+  return (
+    <div className="App">
+      <Route path="/" component={Homepage} exact />
+      <Route path="/chats" component={Chatpage} />
+    </div>
   );
 }
 

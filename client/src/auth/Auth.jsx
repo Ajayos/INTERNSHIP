@@ -49,11 +49,7 @@ const Auth = () => {
         }).catch((error) => {
           console.error(error);
         })
-      } else {
-        return <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}> Enter valid email</Alert>
-      }
-    } else {
-      return 
+      } 
     }
     
   };
