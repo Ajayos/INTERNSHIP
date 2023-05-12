@@ -8,12 +8,8 @@ const bodyParser = require("body-parser");
 const { v4: uuidv4 } = require("uuid");
 
 // impoer from local files
-//const connectDB = require("./db/db");
-//const userRoutes = require("./routes/userRoutes");
-//const chatRoutes = require("./routes/chatRoutes");
-//const messageRoutes = require("./routes/messageRoutes");
-//const { notFound, errorHandler } = require("./middleware/errorMiddleware");
-
+const connectDB = require("./db/db");
+const rout = require('./routes/index')
 // setup app using express
 const app = express();
 
@@ -24,33 +20,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // setup dotenv
-//dotenv.config();
+dotenv.config();
 
 // setup db
-//connectDB();
+connectDB();
 
 // setup port
 const PORT = process.env.PORT || 3001;
 
-// setup routes
-//app.use("/api/user", userRoutes);
-//app.use("/api/chat", chatRoutes);
-//app.use("/api/message", messageRoutes);
+app.use('/', rout)
 
-// --------------------------deployment------------------------------
-const __dirname1 = path.resolve();
 
-app.use(express.static(path.join(__dirname1, "/public")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 app.get("*", (req, res) =>
-  res.sendFile(path.resolve(__dirname1, "public", "index.html"))
+  res.sendFile(path.resolve(__dirname, "public", "index.html"))
 );
   
 // --------------------------deployment------------------------------
 
-// Error Handling middlewares
-//app.use(notFound);
-//app.use(errorHandler);
 
 // setup server
 const server = app.listen(

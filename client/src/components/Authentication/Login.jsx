@@ -28,24 +28,15 @@ const Login = () => {
 
   const [open, setOpen] = useState(true);
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
+  
 
   const handleSubmit = async (event) => {
+    event.preventDefault();
     setLoading(true);
-    if (!email || !password) {
-      setLoading(false);
-      return;
-    }
+    //if (!email || !password) {
+    //  setLoading(false);
+    //  return;
+    //}
 
     // console.log(email, password);
     try {
@@ -60,11 +51,12 @@ const Login = () => {
         { email, password },
         config
       );
-
-      setLoading(false);
-      history.push("/chats");
+        console.log(data)
+      //setLoading(false);
+      //history.push("/chats");
     } catch (error) {
       setLoading(false);
+      console.log(error.message)
     }
   };
 
@@ -90,6 +82,7 @@ const Login = () => {
             label="Email Address"
             name="email"
             autoComplete="email"
+            onChange={(e) => setEmail(e.target.value)}
             autoFocus
           />
           <TextField
@@ -101,6 +94,7 @@ const Login = () => {
             type={show ? "text" : "password"}
             id="password"
             autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
           ></TextField>
 
           <br />
