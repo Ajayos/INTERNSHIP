@@ -7,12 +7,9 @@ import React from 'react';
 function App() {
   return (
     <div className="App">
-      {/*<Student></Student>*/}
-      {/*<View></View>*/}
-      <Navigation />
       <Routes>
         <Route path="/Student" element={<Student />} />
-        <Route path="/View" element={<View />} />
+        <Route path="/Views" element={<View />} />
       </Routes>
     </div>
   );

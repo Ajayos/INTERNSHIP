@@ -14,11 +14,15 @@ app.use(bodyParser.json());
 
 connectDB();
 
-app.get('/view', async function(req, res) {
+app.use(express.static(path.join(__dirname, "build")));
+app.use('/', function(req, res) {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+app.get('/students/v1/students', async function(req, res) {
     const data = await User.find();
     res.json(data);
 })
-app.post('/add', async function(req, res) {
+app.post('/students/v1/students', async function(req, res) {
     console.log(req.body)
     const { no, name, grade } = req.body;
     try {
@@ -28,10 +32,12 @@ app.post('/add', async function(req, res) {
         res.json({message: error})
     };
 })
-app.put('/update', function(req, res) {
-    res.send("hi");
+app.put('/students/v1/students/:id', async function(req, res) {
+    let id = req.params.id;
+    await User.findByIdAndUpdate(id,req.body);
+    res.send("data updated")
 })
-app.delete('/delete/:id',async function(req, res) {
+app.delete('/students/v1/students/:id',async function(req, res) {
     const id = req.params.id;
     const out = await User.findByIdAndDelete(id);
     if(out) {

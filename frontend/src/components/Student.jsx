@@ -8,23 +8,40 @@ import {
   Avatar,
   Paper,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-const Student = () => {
+const Student = ({option}) => {
   var [Student, setStudent] = useState({ name: "", no: "", grade: "" });
+  var [isEdit, setIsEdit] = useState(false);
   const handleOnchange = (e) => {
     const { name, value } = e.target;
     setStudent({ ...Student, [name]: value });
   };
+  useEffect(() => {
+    if(option) {
+      setStudent({ name: option.name, no: option.no, grade: option.grade });
+      setIsEdit(true);
+    }
+  }, [option]);
   const handleSubmit = async (event) => {
     event.preventDefault();
     var name = Student['name'];
-    await axios.post("http://localhost:8080/add", {
-      name: name,
-      no: Student['no'],
-      grade: Student["grade"],
-    });
-    window.location.href = "/view";
+    if(option) {
+      await axios.put(`/students/v1/students/${option.id}`,
+      {
+        name: name,
+        no: Student['no'],
+        grade: Student["grade"],
+      });
+    } else {
+      await axios.post("/students/v1/students",
+      {
+        name: name,
+        no: Student['no'],
+        grade: Student["grade"],
+      });
+    }
+    window.location.href = "/views";
   };
 
   return (
@@ -45,7 +62,7 @@ const Student = () => {
             >
               <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
               <Typography component="h1" variant="h5">
-                Add data
+                { isEdit ? 'EDIT DATA' :  'ADD DATA'}
               </Typography>
               <Box
                 component="form"
@@ -59,6 +76,7 @@ const Student = () => {
                   fullWidth
                   id="no"
                   label="Rollno"
+                  value={Student["no"]}
                   name="no"
                   autoComplete="no"
                   onChange={handleOnchange}
@@ -68,6 +86,7 @@ const Student = () => {
                   margin="normal"
                   required
                   fullWidth
+                  value={Student["name"]}
                   id="name"
                   label="name"
                   name="name"
@@ -80,6 +99,7 @@ const Student = () => {
                   required
                   fullWidth
                   name="grade"
+                  value={Student["grade"]}
                   label="Grade"
                   type="text"
                   id="grade"
@@ -94,7 +114,7 @@ const Student = () => {
                   sx={{ mt: 3, mb: 2 }}
                   onClick={handleSubmit}
                 >
-                  Submit
+                  { isEdit ? 'UPDATE' :  'ADD'}
                 </Button>
               </Box>
             </Box>
