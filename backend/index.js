@@ -32,7 +32,7 @@ app.post('/students/v1/students', async function(req, res) {
 })
 app.put('/students/v1/students/:id', function(req, res) {
     let id = req.params.id;
-    await studentmodel.findByIdAndUpdate(id,req.body);
+    await User.findByIdAndUpdate(id,req.body);
     res.send("data updated")
 })
 app.delete('/students/v1/students/:id',async function(req, res) {
