@@ -21,14 +21,12 @@ app.get('/view', async function(req, res) {
 app.post('/add', async function(req, res) {
     console.log(req.body)
     const { no, name, grade } = req.body;
-    const isin = await User.find(no);
-    if(isin) {
-        res.json({message: 'user found'})
-    } else {
+    try {
         await User.create({name: name, no: no, grade: grade});
         res.json({message: 'ok'})
-    }
-    
+    } catch (error) {
+        res.json({message: error})
+    };
 })
 app.put('/update', function(req, res) {
     res.send("hi");

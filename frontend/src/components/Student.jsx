@@ -14,12 +14,15 @@ const Student = () => {
   var [Student, setStudent] = useState({ name: "", no: "", grade: "" });
   const handleOnchange = (e) => {
     const { name, value } = e.target;
-    setStudent({ ...setStudent, [name]: value });
+    setStudent({ ...Student, [name]: value });
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
+    var name = Student['name'];
     await axios.post("http://localhost:8080/add", {
-      Student,
+      name: name,
+      no: Student['no'],
+      grade: Student["grade"],
     });
     window.location.href = "/view";
   };
@@ -66,7 +69,7 @@ const Student = () => {
                   required
                   fullWidth
                   id="name"
-                  label="Name"
+                  label="name"
                   name="name"
                   autoComplete="name"
                   onChange={handleOnchange}

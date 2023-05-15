@@ -30,7 +30,7 @@ const View = () => {
     ) {
       const { data } = await axios.delete(`http://localhost:8080/delete/${id}`);
       alert(data.message);
-      
+      window.location.href = "/view";
     }
   };
   return (
@@ -56,8 +56,6 @@ const View = () => {
                   <TableCell key={index}>{value.grade}</TableCell>
                   <TableCell key={index}>
                     <Button>EDIT</Button>
-                  </TableCell>
-                  <TableCell key={index}>
                     <Button
                       name={value._id}
                       onClick={() => handleDelete(value.name, value._id)}
