@@ -12,25 +12,45 @@ import React, { useEffect } from "react";
 import axios from "axios";
 const View = () => {
   const [students, setStudents] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     async function GetStudent() {
-      var { data } = await axios.get("http://localhost:8080/view");
+      var { data } = await axios.get("http://localhost:8080/students/v1/students");
       setStudents(data);
     }
     GetStudent();
   }, []);
 
-  
-  const handleDelete = async(name, id) => {
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = async (name, id) => {
     if (
       window.confirm(
         `Are you sure you want to delete ${name}?`
       )
     ) {
-      const { data } = await axios.delete(`http://localhost:8080/delete/${id}`);
+      const { data } = await axios.delete(`http://localhost:8080/students/v1/students/${id}`);
       alert(data.message);
-      
+
+    }
+  };
+  const handleUpdate = async (name, id) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete ${name}?`
+      )
+    ) {
+      const { data } = await axios.delete(`http://localhost:8080/students/v1/students/${id}`);
+      alert(data.message);
+
     }
   };
   return (
@@ -55,7 +75,9 @@ const View = () => {
                   <TableCell key={index}>{value.name}</TableCell>
                   <TableCell key={index}>{value.grade}</TableCell>
                   <TableCell key={index}>
-                    <Button>EDIT</Button>
+                    <Button
+                      name={value._id}
+                      onClick={() => han}>EDIT</Button>
                   </TableCell>
                   <TableCell key={index}>
                     <Button
@@ -71,6 +93,28 @@ const View = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Do you Want to delete ?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={handleClose} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

@@ -18,7 +18,7 @@ const Student = () => {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await axios.post("http://localhost:8080/add", {
+    await axios.post("http://localhost:8080/students/v1/students", {
       Student,
     });
     window.location.href = "/view";

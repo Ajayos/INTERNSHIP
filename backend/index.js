@@ -14,11 +14,11 @@ app.use(bodyParser.json());
 
 connectDB();
 
-app.get('/view', async function(req, res) {
+app.get('/students/v1/students', async function(req, res) {
     const data = await User.find();
     res.json(data);
 })
-app.post('/add', async function(req, res) {
+app.post('/students/v1/students', async function(req, res) {
     console.log(req.body)
     const { no, name, grade } = req.body;
     const isin = await User.find(no);
@@ -30,10 +30,12 @@ app.post('/add', async function(req, res) {
     }
     
 })
-app.put('/update', function(req, res) {
-    res.send("hi");
+app.put('/students/v1/students/:id', function(req, res) {
+    let id = req.params.id;
+    await studentmodel.findByIdAndUpdate(id,req.body);
+    res.send("data updated")
 })
-app.delete('/delete/:id',async function(req, res) {
+app.delete('/students/v1/students/:id',async function(req, res) {
     const id = req.params.id;
     const out = await User.findByIdAndDelete(id);
     if(out) {
