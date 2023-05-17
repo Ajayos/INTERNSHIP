@@ -1,5 +1,5 @@
 import { useTheme } from "@emotion/react";
-import { Box, Card, CardContent, CardHeader, CssBaseline, Divider, Grid, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Container, CssBaseline, Divider, Grid, LinearProgress, Stack, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -32,21 +32,58 @@ const AuthControl = () => {
     return (
       <div className={classes.root}>
       <CssBaseline />
-      <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
-                <Grid item xs={12}>
-                    <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)'}}>
-                        <Grid item sx={{ m: { xs: 5, sm: 3 }, mb: 0,  }} >
-                        <Card  sx={{ maxWidth: { xs: 400, lg: 475 }, margin: { xs: 2.5, md: 3 }, '& > *': { flexGrow: 1, flexBasis: '50%' } }}>
-         <CardHeader sx={{ maxWidth: { xs: 400, lg: 475 }, margin: { xs: 2.5, md: 3 }, '& > *': { flexGrow: 1, flexBasis: '50%' } }} title={"title"}  />
-        <CardHeader title={<Typography variant="h3">{"title"}</Typography>}  />
-        <Divider />
-       <CardContent  >hi</CardContent>
-      </Card>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                
-            </Grid>
+      <Container maxWidth="sm">
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "50vh",
+            color: "white",
+            borderRadius: "5px",
+            boxShadow: "10px 10px 10px 10px rgba(0, 0, 0, 0.2)",
+            position: "absolute",
+
+          }}
+        >
+          <Box sx={{ position: "absolute",marginTop: "50%"}}> </Box>
+        <Card
+          sx={{position: "absolute",}}
+        >
+          <CardHeader
+            title="Welcome to the Dashboard"
+            subheader="Please login to continue"
+            sx={{ color: "white" }}
+          />
+          <CardContent>
+            <Stack
+              alignItems="center"
+              justifyContent="center"
+              spacing={1}
+              sx={{ color: "white" }}
+            >
+              {error ? () => {setError("")} : null }
+              <Typography
+                gutterBottom
+                variant="h2"
+                sx={{ color: "white" }}
+              ></Typography>
+              </Stack> <Stack>
+              <Typography
+                variant="caption"
+                fontSize="16px"
+                textAlign="center"
+                sx={{ color: "white" }}
+              >
+                Enter your credentials to continue
+              </Typography>
+            </Stack>
+          </CardContent>
+          </Card>
+          </Box>
+        </Container>
+
     </div>
     );
   }
