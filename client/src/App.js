@@ -1,16 +1,12 @@
-import { Route, Routes } from "react-router-dom";
-import Loadable from './components/Loadable'
-
-const Home = Loadable(() => import('./Pages/Home/Home'))
-const AuthControl = Loadable(() => import('./Pages/Home/AuthControl'))
+import Homepage from "./Pages/Homepage";
+import { Route } from "react-router-dom";
+import Chatpage from "./Pages/Chatpage";
 
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="/login" element={<AuthControl />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
+      <Route path="/" component={Homepage} exact />
+      <Route path="/chats" component={Chatpage} />
     </div>
   );
 }
