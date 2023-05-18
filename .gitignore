@@ -9,6 +9,8 @@
 # testing
 /coverage
 
+.vscode
+
 # production
 /build
 app/
