@@ -9,7 +9,7 @@ const { v4: uuidv4 } = require("uuid");
 
 // impoer from local files
 const connectDB = require("./db/db");
-const rout = require('./routes/index')
+const picModel = require("./models/picModel");
 // setup app using express
 const app = express();
 
@@ -26,17 +26,69 @@ dotenv.config();
 connectDB();
 
 // setup port
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3003;
 
-app.use('/', rout)
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public')
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' +file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage }).single('file')
 
 
+app.post('/upload', (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      res.sendStatus(500);
+    }
+    var fs = require('fs');
+    console.log(req.file.mimetype)
+    fs.readFile('./public/' + req.file.filename, function (err, data) {
+      if (err) return console.error(err);
+      const addPic = new picModel({url: data, name: req.file.filename, mimetype: req.file.mimetype});
+      addPic.save();
+    });
+    res.send(req.file);
+  });
+});
+app.get('/view', async (req, res) => {
+  try {
+    const pic = await picModel.findById(req.query.id);
+    if (!pic) {
+      return res.sendStatus(404);
+    }
+    
+    // Convert the image data to base64
+    const base64Data = Buffer.from(pic.url.buffer).toString('base64');
+    const imageUrl = `<img alt=${pic.name}  src="data:${pic.mimetype};base64,${base64Data}" />`;
+    
+    // Send the image URL as the response
+    res.send(imageUrl);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+app.use(express.static('public'));
+app.post('/pic', function (req, res) {
+  const { pic, name } = req.body;
+  console.log(pic)
+  //const addPic = new picModel({pic, name});
+ // addPic.save();
+  res.json({
+    status: "success",
+   // data: addPic,
+  });
+});
 app.use(express.static(path.join(__dirname, "/public")));
 
-app.get("*", (req, res) =>
-  res.sendFile(path.resolve(__dirname, "public", "index.html"))
-);
-  
+
 // --------------------------deployment------------------------------
 
 

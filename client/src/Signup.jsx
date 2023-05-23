@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -19,22 +18,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [name, setName] = useState();
-  const [confirmpassword, setConfirmpassword] = useState();
   const [pic, setPic] = useState();
   const [picLoading, setPicLoading] = useState(false);
 
-  const history = useHistory();
 
 
   const handleSubmit = async (event) => {
@@ -42,6 +35,7 @@ const Signup = () => {
     const data = new FormData(event.currentTarget);
     const maili = data.get("email");
     const password_ = data.get("password");
+    console.log(previewUrl)
     try {
       const config = {
         headers: {
@@ -52,7 +46,7 @@ const Signup = () => {
         "http://localhost:3003/pic",
         {
           name,
-          pic,
+          pic: previewUrl,
         },
         config
       );
@@ -100,18 +94,7 @@ const Signup = () => {
           Create your account
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            onChange={(e) => setEmail(e.target.value)}
-            autoFocus
-          />
-          <br />
+         
           <TextField
             margin="normal"
             required
@@ -123,34 +106,8 @@ const Signup = () => {
             autoComplete="current-username"
             onChange={(e) => setName(e.target.value)}
           ></TextField>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type={show ? "text" : "password"}
-            id="password"
-            autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-          ></TextField>
-          <br />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="confirmPassword"
-            label="Confirm Password"
-            type={show ? "text" : "password"}
-            onChange={(e) => setConfirmpassword(e.target.value)}
-            id="confirmPassword"
-          ></TextField>
+          
 
-          <br />
-          <FormControlLabel
-            control={<Checkbox onClick={handleClick} color="primary" />}
-            label={show ? "Hide password" : "Show password"}
-          />
           <br />
           {!previewUrl ? (
             <label htmlFor="image-upload">
