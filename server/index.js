@@ -10,6 +10,7 @@ const { v4: uuidv4 } = require("uuid");
 // impoer from local files
 const connectDB = require("./db/db");
 const picModel = require("./models/picModel");
+const imageModel = require("./models/imageModel");
 // setup app using express
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(cors());
 app.use(express.json()); // to accept json data
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(bodyParser.raw({ type: 'application/octet-stream', limit: '10mb' }));
 // setup dotenv
 dotenv.config();
 
@@ -59,14 +60,15 @@ app.post('/upload', (req, res) => {
 });
 app.get('/view', async (req, res) => {
   try {
-    const pic = await picModel.findById(req.query.id);
+    const pic = await imageModel.findById(req.query.id);
     if (!pic) {
       return res.sendStatus(404);
     }
     
     // Convert the image data to base64
-    const base64Data = Buffer.from(pic.url.buffer).toString('base64');
-    const imageUrl = `<img alt=${pic.name}  src="data:${pic.mimetype};base64,${base64Data}" />`;
+    //const base64Data = Buffer.from(pic.url.buffer).toString('base64');
+   // console.log(pic.url.toString('base64'))
+    const imageUrl = `<img alt="ajay o s"  src="${pic.url.toString('base64')}" />`;
     
     // Send the image URL as the response
     res.send(imageUrl);
@@ -77,14 +79,12 @@ app.get('/view', async (req, res) => {
 });
 app.use(express.static('public'));
 app.post('/pic', function (req, res) {
-  const { pic, name } = req.body;
-  console.log(pic)
-  //const addPic = new picModel({pic, name});
- // addPic.save();
-  res.json({
-    status: "success",
-   // data: addPic,
-  });
+  var pp = JSON.parse(req.body)
+   const save = new imageModel({url: pp.url, mimeType: pp.type});
+    save.save();
+  // Send a response back if needed
+  res.json({ message: 'Image data received successfully' });
+  
 });
 app.use(express.static(path.join(__dirname, "/public")));
 
